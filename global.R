@@ -1,6 +1,7 @@
 # TCU trend analysis - global 
 
 # Define global variables
+mes <<- " "
 LDF <<- NULL
 files.df <- NULL
 mm.df <- data.frame(name = c("No line", 
@@ -22,29 +23,28 @@ preprocessFileDF <- function(f.df) {
   # Extract test iteration
   f.df <- f.df %>% mutate(iter = substr(x = name, start = 35, stop = 37))
   
+  # Arrange
+  f.df <- f.df %>% arrange(as.integer(iter))
+  
   return(f.df)
 }
 
 validateFileDF <- function(f.df) {
-  # From all csv files, extract information from file name
-  sapply(f.df[, "name", T] , function(x) substr(x = x, start = nchar(x)-3, stop = nchar(x)), USE.NAMES = F)
+  # 1. Check if names are duplicate
+  if(length(unique(f.df$name)) != nrow(f.df)) return("duplicate file names")
+
+  # 2. Check if all names are length X
+  if(all(nchar(f.df$name) != 41)) return("file names length are not equal to 41")
   
-  # Check if all names are length X
-  if(all(nchar(f.df$name) != 41)) {
-    print("error")
-  }
+  # 3. Check if all dates are unique
+  if(length(unique(f.df$date)) != nrow(f.df)) return("duplicate date")
   
-  if(length(unique(f.df$date)) != nrow(f.df)) print("error")
+  # 4. Multiple equipment numbers
+  if(length(unique(f.df$eqp_no)) != 1) return("multiple EQP numbers")
   
-  # Check if all eqp_no are the same
-  if(length(unique(f.df$eqp_no)) != 1) {
-    print("error")
-  } else {
-    EQP_NO <- f.df$eqp_no[1]
-  }
-  
-  # Check if no iter versions are the same
-  if(length(unique(f.df$iter)) != nrow(f.df)) print("error")
+  # 5. Check if no iter versions are the same
+  if(length(unique(f.df$iter)) != nrow(f.df)) return("duplicate iter numbers")
+  return()
 }
 
 preprocessData <- function(f.df) {
@@ -66,7 +66,7 @@ plotTrend <- function(LDF) {
     geom_point() +
     geom_line() +
     labs(x = "Date",
-         y = "Value",
+         y = "Temperature (°C)",
          colour = "Channel",
          shape = "Variable",
          title = paste0("Probe analysis of ", EQP_NO)) +
@@ -74,24 +74,31 @@ plotTrend <- function(LDF) {
   return(p)
 }
 
-plotSubTrend <- function(LDF, mm, size = 15) {
+plotSubTrend <- function(LDF, mm, size = 14) {
   mini <- mm.df %>% filter(name == mm) %>% pull(min)
   maxi <- mm.df %>% filter(name == mm) %>% pull(max)
   
-  p <- ggplot(LDF %>% mutate(variable = factor(variable, levels = c("Maximum", "Minimum", "Average"))), 
-         aes(x = date, y = value, colour = variable)) +
+  p <- ggplot(LDF %>% mutate(variable = factor(variable, levels = c("Maximum", "Average", "Minimum"))), 
+              aes(x = date, y = value, colour = variable)) +
     geom_point(size = 3) +
     geom_line() +
-    geom_hline(yintercept = mini, linetype = "dashed", col = "blue") + 
-    geom_hline(yintercept = maxi, linetype = "dashed", col = "red") + 
     labs(x = "Date",
-         y = "Value",
+         y = "Temperature (°C)",
          colour = "Statistic",
          title = EQP_NO) +
     facet_wrap(~Channel) +
+    scale_x_datetime(limits = c(as.POSIXct(lubridate::floor_date(min(LDF$date), "year")),
+                                as.POSIXct(lubridate::ceiling_date(max(LDF$date), "year"))),
+                     expand = c(0.1, 0.1)) +
+    scale_y_continuous(expand = c(0.07, 0.07)) +
     theme_bw() + 
     theme(text = element_text(size = size)) +
-    scale_color_manual(values=c("red", "blue", "green"))
+    scale_color_manual(values=c("red", "green", "blue"))
+  
+  if(mm != "No line") {
+    p <- p + geom_hline(yintercept = mini, linetype = "dashed", col = "blue") + 
+      geom_hline(yintercept = maxi, linetype = "dashed", col = "red")
+  }
   
   return(p)
 }

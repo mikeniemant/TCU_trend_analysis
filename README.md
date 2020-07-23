@@ -7,14 +7,14 @@ R Shiny app to plot temperature control unit (TCU) trend analysis.
 
 Install the latest R version, the necessary libraries and fork repo from GitHub.
 
-Libraries
+Libraries:
 
 - shiny
 - shinydashboard
 - shinyFiles
 - dplyr
 - tidyr
-- plotly
+- ggplot2
 
 ## Usage
 Start terminal and set directory to forked directory. Launch the with the following command
@@ -27,36 +27,32 @@ Go the your browser: http://127.0.0.1:8888
 
 User selects specific directory (DIR) that only contains the necessary files for one test unit (freezer, fridge)
 
-App imports all files in DIR and defines information from file names in data frame (FILES.DF). Performs the following validation steps
+App imports all selecte dfiles  and defines information from file names in data frame (f.df). Performs the following validation steps
 
-1. DIR is not empty
-2. Length file name characters are of X length
-3. No files with duplicate names
-4. File name ends with ".csv""
-5. File is not empty
-6. File contains two columns
-7. (File contains tab name "*results*")
-8. Check columns
-  - date column --> date
-  - value column --> numeric
-9. 
+1. Check if names are duplicate
+2. Check if all names are length 41
+3. Check if all dates are unique
+4. Multiple equipment numbers
+5. Check if no iter versions are the same
 
-Visualize validation steps in the main tab
+If all checks pass, preprocess the data and perform the following checks:
 
-- date
-- name
-- iteration
-- etc.
-
-From each imported file, app preprocessed the data and adds to data frame (DATA.DF)
-
-- What are these steps?
+1. File it not empty
+2. File contains the columns 
+  - 'Channel': probe name (character)
+  - 'Minimum': value (numeric, point delimiter)
+  - 'Maximum': value (numeric,  delimiter)
+  - 'Average': value (numeric,  delimiter)
+  - 'CORRECTIE_FACTOR': value (numeric, delimiter)
+3. Each row has values for each column
 
 ## Todo list:
-- Add functionality to automatically install/updates packages
-- Validate program with a jenkins server
+- Add functionality to automatically install/updates packages in the install CMD file
+  - install nbs
+  - nbs::importPackages("shiny", "shinydashboard", "shinyFiles", "dplyr", "tidyr", "ggplot2")
+  - install app
 - correctiefactor
-- validation steps
+- include the data preprocess validation steps
 
 ## License
 TCU trend analysis is under the APACHE-II license

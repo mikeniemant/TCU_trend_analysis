@@ -1,5 +1,8 @@
 # TCU trend analysis - tab plot
 
 tabPanel("Plot", value = "plot.tab",
-         plotOutput("plot")
+         
+         conditionalPanel(condition = "output.file_uploaded & input.tabs == 'plot.tab'",
+                          plotOutput("plot")),
+         
 )

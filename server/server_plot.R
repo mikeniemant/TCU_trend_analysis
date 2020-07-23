@@ -2,7 +2,7 @@
 
 observeEvent({
   
-  c(input$tabs, input$radio_mm)
+  c(input$tabs, input$radio_mm, input$input_files)
 },
 {
   if(is.null(LDF)) {

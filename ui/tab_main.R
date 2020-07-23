@@ -2,6 +2,12 @@
 
 tabPanel("Imported files", value = "main",
          h3("Temperature controlled unit trend analysis (SOP EQV 037)"),
-         htmlOutput("main_text"),
-         DT::dataTableOutput("input_files_table")
+         
+         conditionalPanel(condition = "!output.file_uploaded & input.tabs == 'main'",
+                          htmlOutput("main_text")),
+        
+         DT::dataTableOutput("input_files_table"),
+         
+         conditionalPanel(condition = "!output.file_uploaded & input.tabs == 'main'",
+                          textOutput("mes"))
 )
