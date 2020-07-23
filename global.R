@@ -4,13 +4,13 @@
 mes <<- " "
 LDF <<- NULL
 files.df <- NULL
-mm.df <- data.frame(name = c("No line", 
-                             "Refrigerator [2, 8]", 
-                             "Fridge [-20, -15]", 
-                             "ULT-fridge [-90, -70]"),
-                    min = c(NA, 2,-20, -90),
-                    max = c(NA, 8, -15, -70), 
-                    stringsAsFactors = F)
+limit.df <- data.frame(name = c("No limit", 
+                                "Refrigerator [2, 8]", 
+                                "Fridge [-20, -15]", 
+                                "ULT-fridge [-90, -70]"),
+                       min = c(NA, 2,-20, -90),
+                       max = c(NA, 8, -15, -70), 
+                       stringsAsFactors = F)
 
 preprocessFileDF <- function(f.df) {
   # Extract date
@@ -47,6 +47,27 @@ validateFileDF <- function(f.df) {
   return()
 }
 
+# Validate
+validateData <- function(f.df) {
+  for(i in 1:nrow(f.df)) {
+    df <- read.csv2(f.df$datapath[i], stringsAsFactors = F, dec = ".")
+    
+    # 1. Count number of rows
+    f.df[i, "nrow"] <- nrow(df) == 9
+    
+    # 2. Check if columns are available
+    f.df[i, "column_names"] <- all(colnames(df) == c("Channel", "Minimum", "Maximum", "Average", "Standard.deviation", "Alarms", "MKT"))
+    
+    # 3. Check columns class
+    f.df[i, "column_types"] <- all(unname(sapply(df, class)) == c("character", "numeric", "numeric", "numeric", "numeric", "integer", "numeric"))
+    
+    # 4. Check for empty cells
+    f.df[i, "complete"] <- !(any(df == "", na.rm = T) | any(is.na(df)))
+  }
+  
+  return(f.df)
+}
+
 preprocessData <- function(f.df) {
   WDF <- do.call(rbind, mapply(function(i) {
     # Load file, add date as column and filter irrelevant columns
@@ -74,9 +95,9 @@ plotTrend <- function(LDF) {
   return(p)
 }
 
-plotSubTrend <- function(LDF, mm, size = 14) {
-  mini <- mm.df %>% filter(name == mm) %>% pull(min)
-  maxi <- mm.df %>% filter(name == mm) %>% pull(max)
+plotSubTrend <- function(LDF, limit, size = 14) {
+  mini <-limit.df %>% filter(name == limit) %>% pull(min)
+  maxi <-limit.df %>% filter(name == limit) %>% pull(max)
   
   p <- ggplot(LDF %>% mutate(variable = factor(variable, levels = c("Maximum", "Average", "Minimum"))), 
               aes(x = date, y = value, colour = variable)) +
@@ -95,7 +116,7 @@ plotSubTrend <- function(LDF, mm, size = 14) {
     theme(text = element_text(size = size)) +
     scale_color_manual(values=c("red", "green", "blue"))
   
-  if(mm != "No line") {
+  if(limit != "No limit") {
     p <- p + geom_hline(yintercept = mini, linetype = "dashed", col = "blue") + 
       geom_hline(yintercept = maxi, linetype = "dashed", col = "red")
   }
