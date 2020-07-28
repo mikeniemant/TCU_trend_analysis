@@ -1,7 +1,7 @@
 # TCU trend analysis - sidebar
 
 tabPanel("Imported files", value = "main",
-         h3("Temperature controlled unit trend analysis (SOP EQV 037)"),
+         h3("Temperature controlled unit trend analysis (SOP EQP 037)"),
          
          conditionalPanel(condition = "!output.file_uploaded & input.tabs == 'main'",
                           htmlOutput("main_text")),

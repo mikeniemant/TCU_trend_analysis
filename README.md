@@ -7,7 +7,7 @@ R Shiny app to plot temperature control unit (TCU) trend analysis.
 
 Install the latest R version, the necessary libraries and fork repo from GitHub.
 
-Libraries: shiny, shinydashboard, shinyFiles, dplyr, tidyr and ggplot2
+Packages: DT, shiny, shinydashboard, shinyFiles and tidyverse
 
 ## Usage
 Start terminal and set directory to forked directory. Launch the app with the following command:
@@ -48,7 +48,6 @@ If all data validation checks pass, preprocess the data and plot output.
   - nbs::importPackages("shiny", "shinydashboard", "shinyFiles", "dplyr", "tidyr", "ggplot2")
   - install app
 - include the correction factor
-- SOP IT 048
 - Okay to upload document to GitHub?
 - change graph order
 
