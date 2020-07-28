@@ -34,9 +34,9 @@ If all file validation checks pass, preprocess the data and perform the followin
 2. Check if file contains the following columns:
   - 'Channel': probe name (character)
   - 'Minimum': value (numeric, point delimiter)
-  - 'Maximum': value (numeric,  delimiter)
-  - 'Average': value (numeric,  delimiter)
-  - 'CORRECTIE_FACTOR': value (numeric, delimiter)
+  - 'Maximum': value (numeric, point delimiter)
+  - 'Average': value (numeric, point delimiter)
+  - 'CORRECTIE_FACTOR': value (numeric, point delimiter)
 3. Check columns class (as shown in the previous step)
 4. Check for empty cells
 
