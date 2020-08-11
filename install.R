@@ -1,5 +1,5 @@
 install.packages("DT")
 install.packages("shiny")
 install.packages("shinydashboard")
-install.packages("shinyFile")
+install.packages("shinyFiles")
 install.packages("tidyverse")
