@@ -6,7 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.0.4] - 2020-07-XX
+## [0.0.5] - 2020-08-11
+
+### Added
+- Functionality to add correction factor
+- Cross table correction
+
+### Changed
+- Changed directory to build Binder environment
+
+## [0.0.4] - 2020-07-28
 
 ### Added
 - Conda environment yml file to install dependencies (environment.yml)

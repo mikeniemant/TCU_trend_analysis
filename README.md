@@ -45,11 +45,21 @@ If all data validation checks pass, preprocess the data and plot output.
 ## Todo list:
 - Add functionality to automatically install/updates packages in the install CMD file
   - install nbs
-  - nbs::importPackages("shiny", "shinydashboard", "shinyFiles", "dplyr", "tidyr", "ggplot2")
+  - nbs::importPackages("DT", "shiny", "shinydashboard", "shinyFiles", "tidyverse")
   - install app
-- include the correction factor
+- add/deduce correction factor?
 - Okay to upload document to GitHub?
 - change graph order
+- Read main/SkylineDx/Specifications/SWP
+- Sop IT 048
+- SWP 001 / SWP 002
+- Paragraphs
+  - Introduction
+  - Software description
+  - Related documents
+  - Document history
+- URS: user requirements specification
+- SRD (software requirements document) --> software development plan (SDP)
 
 ## License
 TCU trend analysis is under the APACHE-II license

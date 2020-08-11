@@ -12,7 +12,7 @@ source("./global.R")
 # UI ----
 ui <- fluidPage(
   # App title
-  titlePanel(title = "TCU trend analysis | V 0.0.3"),
+  titlePanel(title = "TCU trend analysis | V 0.0.5"),
   
   fluidRow(
     column(3,

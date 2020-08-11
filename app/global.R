@@ -8,6 +8,7 @@ limit.df <- data.frame(name = c("No limit",
                                 "Refrigerator [2, 8]", 
                                 "Fridge [-20, -15]", 
                                 "ULT-fridge [-90, -70]"),
+                       cf_label = c(NA, 4, -20, -80),
                        min = c(NA, 2,-20, -90),
                        max = c(NA, 8, -15, -70), 
                        stringsAsFactors = F)
@@ -80,6 +81,36 @@ preprocessData <- function(f.df) {
   }, 1:nrow(f.df), SIMPLIFY = F))
   
   return(WDF)
+}
+
+# TODO: how to transform this 'for-loop' in a 'for-loop' to something nice?
+applyCorrectionFactor <- function(LDF) {
+  for(i in 1:nrow(LDF)) {
+    # Iteratively identify the correct correction factor date
+    d <- mapply(function(x, d1, d2) {
+      return(between(x, 
+                     min(as.POSIXct(paste0(d1, "-01"))),
+                     max(as.POSIXct(paste0(d2, "-01")))))
+    }, x = LDF[i, "date"], d1 = u.cf.dates[1:(length(u.cf.dates)-1)], d2 = u.cf.dates[2:(length(u.cf.dates))])
+    
+    if(all(d == F)) {
+      mes <- "No correction factor available"
+    }
+    
+    u.cf.date <- substr(u.cf.dates[d], 1, 7)
+    
+    temp <- LDF[i, ]
+    
+    temp <- temp %>% 
+      left_join(cf.df %>% 
+                  filter(cf_date == u.cf.date, label == y) %>% 
+                  select(-cf_date, -label), 
+                by = c("probe"))
+    
+    # Apply correction factor
+    LDF[i, ] <- temp %>% mutate(value = value + factor) %>% select(-factor)
+  }
+  return(LDF)
 }
 
 plotTrend <- function(LDF) {
