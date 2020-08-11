@@ -12,7 +12,7 @@ source("./global.R")
 # UI ----
 ui <- fluidPage(
   # App title
-  titlePanel(title = "TCU trend analysis | V 0.0.6"),
+  titlePanel(title = "TCU trend analysis | V 0.0.7"),
   
   fluidRow(
     column(3,
@@ -109,7 +109,7 @@ server <- shinyServer(function(input, output, session) {
     # Generate PNG of plot
     png(outfile)
     return(list(
-      src = "documents/TCU_overview.png",
+      src = "./../documents/TCU_overview.png",
       contentType = "image/png",
       alt = "overview",
       width = 300, 

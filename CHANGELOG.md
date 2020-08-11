@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.7] - 2020-08-11
+### Added
+- Added binder link
+
+### Changed
+- Changed directory probe figure
+
 ## [0.0.6] - 2020-08-11
 ### Changed
 - Changed runtime version

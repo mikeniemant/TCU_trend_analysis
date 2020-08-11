@@ -1,5 +1,7 @@
 # TCU trend analysis
 
+RShiny: [![Binder](http://mybinder.org/badge_logo.svg)](http://mybinder.org/v2/gh/mikeniemant/TCU_trend_analysis/master?urlpath=shiny/app/)
+
 ## Description
 R Shiny app to plot temperature control unit (TCU) trend analysis.
 
