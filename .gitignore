@@ -1,9 +1,10 @@
 # Project objects
 #################
-data/
+# data/
 results/
 *_cache/
 *_data/
+test_trend_analysis.R
 
 # R related objects
 ###################

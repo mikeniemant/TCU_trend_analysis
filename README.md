@@ -45,12 +45,7 @@ If all file validation checks pass, preprocess the data and perform the followin
 If all data validation checks pass, preprocess the data and plot output.
 
 ## Todo list:
-- Add functionality to automatically install/updates packages in the install CMD file
-  - install nbs
-  - nbs::importPackages("DT", "shiny", "shinydashboard", "shinyFiles", "tidyverse")
-  - install app
 - add/deduce correction factor?
-- Okay to upload document to GitHub?
 - change graph order
 - Read main/SkylineDx/Specifications/SWP
 - Sop IT 048
